@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next gemini" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="webpack,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="webpack的优化点的补充说明 动态导入在vue里的时间注意点：webpack 可以使用dynamic imports的方式引用模块，我们使用 async/ await 和 dynamic import 来实现。每一个dynamic import都将作为一个单独的chunk打包。在vue中的一个例子就是路由懒加载+babel-plugin-dynamic-import-node的构建方案。使用b">
+<meta name="keywords" content="webpack">
+<meta property="og:type" content="article">
+<meta property="og:title" content="webpack4的优化">
+<meta property="og:url" content="http://yoursite.com/2018/10/28/webpack4的优化/index.html">
+<meta property="og:site_name" content="代码泡摄影">
+<meta property="og:description" content="webpack的优化点的补充说明 动态导入在vue里的时间注意点：webpack 可以使用dynamic imports的方式引用模块，我们使用 async/ await 和 dynamic import 来实现。每一个dynamic import都将作为一个单独的chunk打包。在vue中的一个例子就是路由懒加载+babel-plugin-dynamic-import-node的构建方案。使用b">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-10-30T09:22:50.847Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="webpack4的优化">
+<meta name="twitter:description" content="webpack的优化点的补充说明 动态导入在vue里的时间注意点：webpack 可以使用dynamic imports的方式引用模块，我们使用 async/ await 和 dynamic import 来实现。每一个dynamic import都将作为一个单独的chunk打包。在vue中的一个例子就是路由懒加载+babel-plugin-dynamic-import-node的构建方案。使用b">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/10/28/webpack4的优化/">
+
+
+
+
+
+  <title>webpack4的优化 | 代码泡摄影</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">代码泡摄影</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/28/webpack4的优化/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="代码泡摄影">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">webpack4的优化</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-28T11:37:01+08:00">
+                2018-10-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="webpack的优化点的补充说明"><a href="#webpack的优化点的补充说明" class="headerlink" title="webpack的优化点的补充说明"></a>webpack的优化点的补充说明</h3><ol>
+<li><p>动态导入在vue里的时间注意点：<br>webpack 可以使用dynamic imports的方式引用模块，我们使用 async/ await 和 dynamic import 来实现。每一个dynamic import都将作为一个单独的chunk打包。在vue中的一个例子就是路由懒加载+babel-plugin-dynamic-import-node的构建方案。使用babel-plugin-dynamic-import-node是因为开发环境下触发热更新很慢，这个插件讲import异步全部改成require同步</p>
+</li>
+<li><p>打包生成的文件模块标识符的问题<br>一般来说我们在dist生成了一下三种bundle</p>
+<blockquote>
+<p>main bundle 会随着自身的新增内容的修改，而发生变化。<br>vendor bundle 会随着自身的 module.id 的修改，而发生变化。<br>manifest bundle 会因为当前包含一个新模块的引用，而发生变化。</p>
+</blockquote>
+<p>然而我们并不希望vendor每次构建都生成新的hash，毕竟我们希望用到缓存的。解决方法官方有两个插件NamedModulesPlugin和HashedModuleIdsPlugin<br>vue里使用的是HashedModuleIdsPlugin</p>
+<p>相信很多人从webpack3升级到4会碰到问题，接下来</p>
+</li>
+</ol>
+<h3 id="升级到webpack4你该搞明白"><a href="#升级到webpack4你该搞明白" class="headerlink" title="升级到webpack4你该搞明白"></a>升级到webpack4你该搞明白</h3><h4 id="1-零配置的概念把配置门槛降低了"><a href="#1-零配置的概念把配置门槛降低了" class="headerlink" title="1. 零配置的概念把配置门槛降低了"></a>1. 零配置的概念把配置门槛降低了</h4><p>主要使用了模式的概念。</p>
+<blockquote>
+<p>development 模式下，默认开启了NamedChunksPlugin 和NamedModulesPlugin方便调试，提供了更完整的错误信息，更快的重新编译的速度<br>production 模式下，由于提供了splitChunks和minimizer，所以基本零配置，代码就会自动分割、压缩、优化，同时 webpack 也会自动帮你 Scope hoisting(作用域提升) 和 Tree-shaking</p>
+</blockquote>
+<p>相当于把一些基本的配置当成默认配置。只需要在命令行运行时带上mode参数就搞定</p>
+<h4 id="2-一些插件的废除和替换"><a href="#2-一些插件的废除和替换" class="headerlink" title="2. 一些插件的废除和替换"></a>2. 一些插件的废除和替换</h4><table>
+<thead>
+<tr>
+<th>废弃了</th>
+<th style="text-align:center">顶替者(用optimization属性)</th>
+<th style="text-align:right">变化</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>uglifyjs-webpack-plugin</td>
+<td style="text-align:center">minimizer</td>
+<td style="text-align:right">压缩优化</td>
+</tr>
+<tr>
+<td>CommonsChunkPlugin</td>
+<td style="text-align:center">splitChunks</td>
+<td style="text-align:right">代码分割，下面详解</td>
+</tr>
+</tbody>
+</table>
+<p>还有一些新的插件：Tree Shaking，SideEffects。我还不知道怎么用–</p>
+<h4 id="3-要注意的新的优化点"><a href="#3-要注意的新的优化点" class="headerlink" title="3. 要注意的新的优化点"></a>3. 要注意的新的优化点</h4><ol>
+<li>extract-text-webpack-plugin  -&gt; mini-css-extract-plugin</li>
+</ol>
+<p>它与extract-text-webpack-plugin最大的区别是：它在code spliting的时候会将原先内联写在每一个 js chunk bundle的 css，单独拆成了一个个 css 文件。js变得更干净了，css是<strong>根据optimization.splitChunks的配置自动拆分css文件为单独的模块</strong>的规则拆分的，不用担心过多的httlp资源请求问题</p>
+<ol start="2">
+<li>所有的[chunkhash] -&gt;[contenthash]</li>
+</ol>
+<p>这是为了解决当css与js文件有依赖时，两者有相同的chunkhash。这样js修改了，css没改的情况下chunkhash页被修改了，没法缓存了呀<br>contenthash 你可以简单理解为是 moduleId + content 所生成的 hash<br>相关<a href="https://github.com/webpack/webpack.js.org/issues/2096" target="_blank" rel="noopener">issue</a></p>
+<ol start="3">
+<li>代码的压缩优化改成了optimization.minimizer</li>
+</ol>
+<p>在optimization.minimizer里推荐使用optimize-css-assets-webpack-plugin直接配置。但是vue-cli3里的配置自己配的。嗯…反正也不想看那些配置，就这样吧~~~</p>
+<h4 id="4-第三方库和业务代码分开打包策略"><a href="#4-第三方库和业务代码分开打包策略" class="headerlink" title="4. 第三方库和业务代码分开打包策略"></a>4. 第三方库和业务代码分开打包策略</h4><p>上面多处提到了这个optimization.splitChunks</p>
+<p>Webpack 4 最大的改进便是Code Splitting chunk。webpack3是通过CommonsChunkPlugin拆分的。然后现在直接被废弃了，我能怎么办？，跟着学呗。</p>
+<p>开启Code Splitting很简单，使用production的mode就行，会自动开启。并有一个设置好了的一个很合理的配置</p>
+<p>如果同时满足下列条件，chunk 就会被拆分：</p>
+<ul>
+<li>新的 chunk 能被复用，或者模块是来自 node_modules 目录</li>
+<li>新的 chunk 大于 30Kb(min+gz 压缩前）</li>
+<li>按需加载 chunk 的并发请求数量小于等于 5 个</li>
+<li>页面初始加载时的并发请求数量小于等于 3 个</li>
+</ul>
+<p>默认配置已经很合理了，然而当出现如下情况：<br>已vue-cli创建的项目为例。项目用到了第三方的UI组件库，在main.js入口处依赖了第三方库。<br>因为在入口引入了，所以第三方库会被打包进app.js。这样，只要我修改了app.js里的其他代码，打出来的包的hash就变了。浏览器又得再次缓存app.js。第三库相当于又被缓存了一次，这显然不是我们想要的。</p>
+<p>看一下<a href="https://segmentfault.com/u/panjiachen" target="_blank" rel="noopener">花裤衩</a>的配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">splitChunks: &#123;</span><br><span class="line">  chunks: &quot;all&quot;,</span><br><span class="line">  cacheGroups: &#123;</span><br><span class="line">    libs: &#123;</span><br><span class="line">      name: &quot;chunk-libs&quot;,</span><br><span class="line">      test: /[\\/]node_modules[\\/]/,</span><br><span class="line">      priority: 10,</span><br><span class="line">      chunks: &quot;initial&quot; // 只打包初始时依赖的第三方</span><br><span class="line">    &#125;,</span><br><span class="line">    elementUI: &#123;</span><br><span class="line">      name: &quot;chunk-elementUI&quot;, // 单独将 elementUI 拆包</span><br><span class="line">      priority: 20, // 权重要大于 libs 和 app 不然会被打包进 libs 或者 app</span><br><span class="line">      test: /[\\/]node_modules[\\/]element-ui[\\/]/</span><br><span class="line">    &#125;,</span><br><span class="line">    commons: &#123;</span><br><span class="line">      name: &quot;chunk-commons&quot;,</span><br><span class="line">      test: resolve(&quot;src/components&quot;), // 可自定义拓展你的规则</span><br><span class="line">      minChunks: 2, // 最小共用次数</span><br><span class="line">      priority: 5,</span><br><span class="line">      reuseExistingChunk: true</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>主要思路就是</p>
+<ol>
+<li>把初始化时依赖的第三方打包成基础类库，这一类改动小，又被全局需要</li>
+<li>把类似elementUI这一类的比较大、改动较小的抽出来</li>
+<li>全局公用的router、函数、svg图标、layout布局组件等这些不管，直接扔app.js</li>
+<li>业务里会经常使用但没在main.js引入的的components被打包成一个common</li>
+<li>业务里经常使用但是体积相当较小，就直接在main.js引入，打包进app.js</li>
+<li>其他的低频使用的组件会自动按默认splitChunks的设置来拆分</li>
+</ol>
+<p><strong>提醒：</strong> 代码的拆分一定要结合项目的实际情况，比如你就用到element里的一两个组件，完全可以按需加载在main.js，然后直接打包进app.js。所以没有最合理的拆分规则，只有最适合你的。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/webpack/" rel="tag"># webpack</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/28/webpack入门/" rel="next" title="webpack入门">
+                <i class="fa fa-chevron-left"></i> webpack入门
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/30/黄山/" rel="prev" title="黄山（一）">
+                黄山（一） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="zhei">
+            
+              <p class="site-author-name" itemprop="name">zhei</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/zhei" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#webpack的优化点的补充说明"><span class="nav-text">webpack的优化点的补充说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#升级到webpack4你该搞明白"><span class="nav-text">升级到webpack4你该搞明白</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-零配置的概念把配置门槛降低了"><span class="nav-text">1. 零配置的概念把配置门槛降低了</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-一些插件的废除和替换"><span class="nav-text">2. 一些插件的废除和替换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-要注意的新的优化点"><span class="nav-text">3. 要注意的新的优化点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-第三方库和业务代码分开打包策略"><span class="nav-text">4. 第三方库和业务代码分开打包策略</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhei</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

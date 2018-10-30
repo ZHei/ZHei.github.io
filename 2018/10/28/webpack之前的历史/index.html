@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next gemini" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="webpack,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前端工程化项目打包历史前端工程化之前的时代略过 半自动执行脚本来压缩合并文件自从xmlhttprequest被挖掘出来，网页能够和服务端通讯，js能做的事越来越多，文件体积越来越大，互相引用原来越多。然而网速只有几兆的带宽。于是想到，要把js文件狠狠的压缩，能合并的就给合并起来 主要有的js压缩工具：  JSMin 使用简单、灵活，对不同语言、环境支持好。一般配合不同的环境、语言用命令行执行压">
+<meta name="keywords" content="webpack">
+<meta property="og:type" content="article">
+<meta property="og:title" content="webpack之前的历史">
+<meta property="og:url" content="http://yoursite.com/2018/10/28/webpack之前的历史/index.html">
+<meta property="og:site_name" content="代码泡摄影">
+<meta property="og:description" content="前端工程化项目打包历史前端工程化之前的时代略过 半自动执行脚本来压缩合并文件自从xmlhttprequest被挖掘出来，网页能够和服务端通讯，js能做的事越来越多，文件体积越来越大，互相引用原来越多。然而网速只有几兆的带宽。于是想到，要把js文件狠狠的压缩，能合并的就给合并起来 主要有的js压缩工具：  JSMin 使用简单、灵活，对不同语言、环境支持好。一般配合不同的环境、语言用命令行执行压">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-10-28T03:38:11.162Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="webpack之前的历史">
+<meta name="twitter:description" content="前端工程化项目打包历史前端工程化之前的时代略过 半自动执行脚本来压缩合并文件自从xmlhttprequest被挖掘出来，网页能够和服务端通讯，js能做的事越来越多，文件体积越来越大，互相引用原来越多。然而网速只有几兆的带宽。于是想到，要把js文件狠狠的压缩，能合并的就给合并起来 主要有的js压缩工具：  JSMin 使用简单、灵活，对不同语言、环境支持好。一般配合不同的环境、语言用命令行执行压">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/10/28/webpack之前的历史/">
+
+
+
+
+
+  <title>webpack之前的历史 | 代码泡摄影</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">代码泡摄影</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/28/webpack之前的历史/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="代码泡摄影">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">webpack之前的历史</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-28T11:17:01+08:00">
+                2018-10-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="前端工程化项目打包历史"><a href="#前端工程化项目打包历史" class="headerlink" title="前端工程化项目打包历史"></a>前端工程化项目打包历史</h3><p><del>前端工程化之前的时代略过</del></p>
+<h4 id="半自动执行脚本来压缩合并文件"><a href="#半自动执行脚本来压缩合并文件" class="headerlink" title="半自动执行脚本来压缩合并文件"></a>半自动执行脚本来压缩合并文件</h4><p>自从xmlhttprequest被挖掘出来，网页能够和服务端通讯，js能做的事越来越多，文件体积越来越大，互相引用原来越多。<br>然而网速只有几兆的带宽。于是想到，要把js文件狠狠的压缩，能合并的就给合并起来</p>
+<p>主要有的js压缩工具：</p>
+<blockquote>
+<p>JSMin 使用简单、灵活，对不同语言、环境支持好。一般配合不同的环境、语言用命令行执行压缩<br>YUI Compressor 雅虎推出。有JAVA版本和.NET版本，需两者环境配合<br>UglifyJS 基于nodejs，压缩策略较为安全，所以不会对源代码进行大幅度的改造。<br>Closure Compiler 谷歌出品</p>
+</blockquote>
+<p>在我理解，压缩主要做了局部变量命名简化、空格/换行/注释消除、自动优化可简化的语法等工作。</p>
+<p>使用<a href="https://tool.css-js.com/" target="_blank" rel="noopener">压缩工具</a>用es6语法写的js在压缩测试比较中：</p>
+<ol>
+<li>UglifyJS压缩率高，可以自动格式化、优化代码。所以普及率高。现在也是主流的工具</li>
+<li>YUI compressor 好处就是压缩策略安全，相比UglifyJS，自动优化代码的程度较保守</li>
+<li>Closure Compiler 的Advanced模式直接破坏代码的结构，bug多</li>
+</ol>
+<p>压缩有了，但是当a文件和b文件都引用了c文件的方法时，如果把c文件分别和a、b合并，这样就只有两个文件了。这就是最开始的合并方式。<br>一般是通过在windows上用bat脚本或者mac/linux上的shell脚本来决定合并哪些文件、用什么工具压缩、怎么压缩</p>
+<ul>
+<li>进步：</li>
+</ul>
+<ol>
+<li>解决当时网速普遍较慢的情况下网页加载资源较慢的问题</li>
+<li>代码混淆了不容易被盗用</li>
+</ol>
+<ul>
+<li>存在的问题：</li>
+</ul>
+<ol>
+<li>工程化的项目里相互依赖关系变得非常复杂</li>
+<li>合并的文件里可能会有很多无用代码</li>
+</ol>
+<h4 id="自动构建的尝试阶段"><a href="#自动构建的尝试阶段" class="headerlink" title="自动构建的尝试阶段"></a>自动构建的尝试阶段</h4><p>通过脚本构建的项目里的文件相互依赖复杂，命名什么的完全有可能一不小心就冲突了，而且依赖可能是一层一层依赖下去的，维护起来要命呀。<br>所以先解决js相互依赖的问题</p>
+<h5 id="1-js依赖关系的规范探索"><a href="#1-js依赖关系的规范探索" class="headerlink" title="1. js依赖关系的规范探索"></a>1. js依赖关系的规范探索</h5><blockquote>
+<p>CommonJS规范解决了js模块化依赖的问题</p>
+</blockquote>
+<h6 id="CommonJs规范的简单介绍（nodejs版"><a href="#CommonJs规范的简单介绍（nodejs版" class="headerlink" title="CommonJs规范的简单介绍（nodejs版)"></a>CommonJs规范的简单介绍（nodejs版)</h6><ol>
+<li>一个文件就是一个模块</li>
+<li>每个模块内部，都有一个module对象，代表当前模块，有规定好的一些默认属性</li>
+<li>module.exports属性：初始值是一个空对象{}，这个变量把定义的变量、方法暴露出去</li>
+<li>exports变量：Node为每个模块提供一个exports变量，指向module.exports。至于两者的区别，不用去了解，平常就用module.exports</li>
+<li>require引用：把module.exports定义的变量/方法来过来用</li>
+<li>注意：<strong>它是同步的</strong></li>
+</ol>
+<p>既然CommonJS提供了模块化的思路，也已经在服务端（nodejs）里大展手脚。那么浏览器里可不可行？<br>浏览器不兼容CommonJS的原因首先是，缺少了4个NodeJs环境变量：</p>
+<ul>
+<li>module</li>
+<li>exports</li>
+<li>require</li>
+<li>global</li>
+</ul>
+<p>那么只需要提供了这些个环境变量就行了吧。Browerify就是做这的</p>
+<blockquote>
+<p>Browserify 是目前最常用的 CommonJS 格式转换的工具</p>
+</blockquote>
+<p>Browserify的核心思路是讲module暴露出的模块放入一个数组，require时根据模块id找到相应的module执行，总之就是给上面缺少的变量写成可执行的es5的策略</p>
+<p>那么是不是这样就能在浏览器上愉快使用CommonJS？</p>
+<blockquote>
+<p>CommoJS是同步require的方式获取js模块，在浏览器上会阻断主线程。页面会因加载js可能卡住</p>
+</blockquote>
+<p>这肯定是不能容忍的</p>
+<p>于是AMD（异步模块定义）诞生<br>AMD也采用require()语句加载模块，但是要传两个参数require([module], callback)。是的，<strong>回调思路</strong>。</p>
+<h5 id="AMD规范的简单介绍（RequireJS）"><a href="#AMD规范的简单介绍（RequireJS）" class="headerlink" title="AMD规范的简单介绍（RequireJS）"></a>AMD规范的简单介绍（RequireJS）</h5><ol>
+<li>解决两个问题：<br>（1）实现js文件的异步加载，避免网页失去响应<br>（2）管理模块之间的依赖性，便于代码的编写和维护</li>
+<li>模块必须采用特定的define()函数来定义</li>
+<li>非AMD的第三方库加载之前要用require.config()定义固有特征</li>
+</ol>
+<p><strong>CMD规范 和AMD大同小异，具体实现是seajs</strong>。没用过，应该都差不多吧，啊哈哈</p>
+<h4 id="2-html-css模块化的规范"><a href="#2-html-css模块化的规范" class="headerlink" title="2. html/css模块化的规范"></a>2. html/css模块化的规范</h4><blockquote>
+<p>less，sass，stylus 的 css 预处理器简化css语法<br> ejs，jade 等html的模板语法</p>
+</blockquote>
+<p>这些真的是前端狗的福音，不多说，<strong>css-next</strong>来了，继续啃咯。</p>
+<p>这样html/css/js 就都有了适合自动构建的扩展结构。但是这时候写一个构建这些依赖的命令太长太复杂，所以打包工具开始流行：</p>
+<h4 id="3-Grunt-Gulp-流处理构建工具让前端构建更容易"><a href="#3-Grunt-Gulp-流处理构建工具让前端构建更容易" class="headerlink" title="3.Grunt/Gulp 流处理构建工具让前端构建更容易"></a>3.Grunt/Gulp 流处理构建工具让前端构建更容易</h4><blockquote>
+<p>grunt 写法简单，插件还贼多<br>gulp 效率更高，可扩展性更强</p>
+</blockquote>
+<p>nodejs配合这俩大佬做web项目的自动化构建用着都挺爽的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">var gulp = require(&apos;gulp&apos;)</span><br><span class="line">var nodemon = require(&apos;gulp-nodemon&apos;)</span><br><span class="line">var browserSync = require(&apos;browser-sync&apos;).create()</span><br><span class="line"></span><br><span class="line">gulp.task(&apos;nodemon&apos;, function(cb) &#123;</span><br><span class="line">    var started = false</span><br><span class="line">    return nodemon(&#123;</span><br><span class="line">        script: &apos;mswadmin.js&apos;</span><br><span class="line">        , ext: &apos;js&apos;</span><br><span class="line">        , env: &#123; &apos;NODE_ENV&apos;: &apos;default&apos; &#125;  </span><br><span class="line">    &#125;).on(&apos;start&apos;, function() &#123;</span><br><span class="line">      if (!started) &#123;</span><br><span class="line">          cb();</span><br><span class="line">        started = true;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;);</span><br><span class="line">gulp.task(&apos;serve&apos;, function()&#123;</span><br><span class="line">    browserSync.init(&#123;</span><br><span class="line">    proxy: &apos;http://10.3.10.27:18282&apos;,</span><br><span class="line">    browser: &apos;chrome&apos;,</span><br><span class="line">    port: 18282</span><br><span class="line">  &#125;)</span><br><span class="line">    gulp.watch(&apos;static/**/*.+(scss|jade|ls)&apos;, [&apos;inject&apos;])</span><br><span class="line">    .on(&apos;change&apos;, browserSync.reload);</span><br><span class="line">&#125;)</span><br><span class="line">gulp.task(&apos;default&apos;, [&apos;nodemon&apos;，&apos;serve&apos;]);</span><br></pre></td></tr></table></figure></p>
+<p>上面是一个用nodemon监控本地服务+watch代码热更新的配置。可以看出，以流任务的方式一个个执行。用起来也简单</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/webpack/" rel="tag"># webpack</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/28/webpack入门/" rel="prev" title="webpack入门">
+                webpack入门 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="zhei">
+            
+              <p class="site-author-name" itemprop="name">zhei</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/zhei" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前端工程化项目打包历史"><span class="nav-text">前端工程化项目打包历史</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#半自动执行脚本来压缩合并文件"><span class="nav-text">半自动执行脚本来压缩合并文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自动构建的尝试阶段"><span class="nav-text">自动构建的尝试阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-js依赖关系的规范探索"><span class="nav-text">1. js依赖关系的规范探索</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#CommonJs规范的简单介绍（nodejs版"><span class="nav-text">CommonJs规范的简单介绍（nodejs版)</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AMD规范的简单介绍（RequireJS）"><span class="nav-text">AMD规范的简单介绍（RequireJS）</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-html-css模块化的规范"><span class="nav-text">2. html/css模块化的规范</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Grunt-Gulp-流处理构建工具让前端构建更容易"><span class="nav-text">3.Grunt/Gulp 流处理构建工具让前端构建更容易</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhei</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
