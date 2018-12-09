@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next gemini" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="前端摄影">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="准备在理解这部分的内容时，先牢记以下关键点：  JavaScript的数据类型分为：原始类型（primitive type）和对象类型（object type） 原始类型包括 Number、String、Boolean，两个特殊的原始值undefined、null。除上述这些的都是对象类型。 对象（object）是属性（property）的集合，每个属性由“名/值对”组成。注意，js有自己">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js数据类型">
+<meta property="og:url" content="http://yoursite.com/2018/11/26/js数据类型/index.html">
+<meta property="og:site_name" content="代码泡摄影">
+<meta property="og:description" content="准备在理解这部分的内容时，先牢记以下关键点：  JavaScript的数据类型分为：原始类型（primitive type）和对象类型（object type） 原始类型包括 Number、String、Boolean，两个特殊的原始值undefined、null。除上述这些的都是对象类型。 对象（object）是属性（property）的集合，每个属性由“名/值对”组成。注意，js有自己">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-12-05T09:41:57.587Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="js数据类型">
+<meta name="twitter:description" content="准备在理解这部分的内容时，先牢记以下关键点：  JavaScript的数据类型分为：原始类型（primitive type）和对象类型（object type） 原始类型包括 Number、String、Boolean，两个特殊的原始值undefined、null。除上述这些的都是对象类型。 对象（object）是属性（property）的集合，每个属性由“名/值对”组成。注意，js有自己">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/11/26/js数据类型/">
+
+
+
+
+
+  <title>js数据类型 | 代码泡摄影</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">代码泡摄影</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/26/js数据类型/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="代码泡摄影">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">js数据类型</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-26T11:19:11+08:00">
+                2018-11-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><p>在理解这部分的内容时，先牢记以下关键点：</p>
+<ol>
+<li>JavaScript的数据类型分为：原始类型（primitive type）和对象类型（object type）</li>
+<li>原始类型包括 Number、String、Boolean，两个特殊的原始值undefined、null。除上述这些的都是对象类型。</li>
+<li>对象（object）是属性（property）的集合，每个属性由“名/值对”组成。注意，js有自己的全局对象（global object）（语法全局），window和node环境下也有自己独有的全局对象（解释器环境全局）。对象——普通对象、数组、函数</li>
+<li>普通对象的“命名值”的无序集合，但数组（array）表示带有编号的值的有序集合。数组的语法相对普通对象有独有的语法，使数组有一些和普通对象不同的行为特性</li>
+<li>函数是另一种特殊对象，也有特有的行为特征。函数通过new来初始化一个新建的对象。那么函数是作为构造函数来使用。每个构造函数定义了一类（class）对象</li>
+<li>类（class）可以看做是对象类型的子集。Array和Function就是类，此外还有内置了Date、ReExp、Error三个类</li>
+<li>js解释器自带的内存管理机制自动进行垃圾回收（garbage collection）。当不再有任何引用指向一个对象，就会自动回收所占用的内存资源</li>
+<li>数据类型本身可以定义方法（method，不同于函数，可以理解为指向函数的‘名’就是方法）来使用值。对象才能拥有方法，但原始类型（除null、undefined是js里唯二的没有method的类型）也可以拥有自己的方法</li>
+<li>注意可变类型和不可变类型，后面详述</li>
+</ol>
+<h3 id="Number"><a href="#Number" class="headerlink" title="Number"></a>Number</h3><p>不区分整数和浮点数，全部是浮点数</p>
+<p>采用IEEE 754标准定义64位浮点数</p>
+<h4 id="范围"><a href="#范围" class="headerlink" title="范围"></a>范围</h4><p>JavaScript能够表示的整数范围是-2<sup>53</sup> ~ 2<sup>53</sup></p>
+<p>当数字、算术运算超出范围上限，称之为溢出（overflow），用无穷大（Infinity）或负无穷大（-Infinity）表示。</p>
+<p>当运算结果无限接近零并比JavaScript所能表示的最小值还小，称之为下溢（underflow），此时返回0</p>
+<p>被0整除不报错，返回无穷大/负无穷大。0除0返回非数字（NaN）</p>
+<h4 id="二进制浮点数四舍五入误差"><a href="#二进制浮点数四舍五入误差" class="headerlink" title="二进制浮点数四舍五入误差"></a>二进制浮点数四舍五入误差</h4><p>IEEE 754是一种二进制表示法，1/2，1/8，1/1024这些分数是精确地，但1/10，1/100等十进制分数不能被精确表示。即<code>0.1</code>只是一个极其接近于0.1的浮点数。在控制台验证<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var a = 0.3 - 0.2</span><br><span class="line">console.log(a)</span><br><span class="line">0.09999999999999998</span><br><span class="line">a == 0.1</span><br><span class="line">false</span><br><span class="line"></span><br><span class="line">var b = 0.2-0.1</span><br><span class="line">console.log(b)</span><br><span class="line">0.1</span><br></pre></td></tr></table></figure></p>
+<p>理解：0.3和0.2都是精确地数，但是 - 是在计算两者之间的近似差值，这个差值并不是精确地，0.2和0.1之间的近似差值是准确的0.1。所以，涉及到十进制的精确地货币计算，要使用‘分’整数</p>
+<h4 id="Date-构造函数"><a href="#Date-构造函数" class="headerlink" title="Date() 构造函数"></a>Date() 构造函数</h4><p>对应了Date类，构建的对象有简单的方法</p>
+<h3 id="String"><a href="#String" class="headerlink" title="String"></a>String</h3><p>采用UTF-16编码的Unicode字符集</p>
+<h4 id="String自带的方法："><a href="#String自带的方法：" class="headerlink" title="String自带的方法："></a>String自带的方法：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">var s = &quot;hello, world&quot;</span><br><span class="line">s.charAt(0) // h 第一个字符</span><br><span class="line">s.charAt(s.length - 1) // d 最后一个字符</span><br><span class="line"></span><br><span class="line">含头不含尾；stop选填，不填截到尾；start &gt; stop 则交换，相等返回空串；其一为负，则负变0</span><br><span class="line">s.substring(1,4) // (start,stop) ell </span><br><span class="line"></span><br><span class="line">start开始的length长度的截取；length选填，不填截到尾；start为负，start = start + s.length；</span><br><span class="line">length &lt;= 0 返回空串</span><br><span class="line">s.substr(1,4) // (start,lenght) ello</span><br><span class="line"></span><br><span class="line">可操作String和Array</span><br><span class="line">含头不含尾；stop选填，不填截到尾；start &gt;= stop，返回空串/数组；</span><br><span class="line">其一为负，负数选项从数组尾部开始算起，最后一个位置为-1</span><br><span class="line">s.slice(1,-2) // (start,stop) ell wor</span><br><span class="line">s.slice(-3,-1) // rl</span><br><span class="line">s.slice(-3)  // rld</span><br><span class="line"></span><br><span class="line">s.indexOf(&apos;l&apos;) // 2 字符l首次出现的位置，没有返回 -1 </span><br><span class="line"></span><br><span class="line">s.split(&apos;, &apos;) // [&apos;hello&apos;,&apos;world&apos;] 分割字符串为数组</span><br><span class="line"></span><br><span class="line">s.replace(&apos;h&apos;,&apos;H&apos;) // Hello, world 全文字字符替换</span><br><span class="line"></span><br><span class="line">s.toUpperCase // HELLO, WORLD</span><br></pre></td></tr></table></figure>
+<p>字符串在内存定义后，是固定不变的，上述方法都返回新字符串，原字符串并没有发生改变。</p>
+<p>注意：s[0] 也可以访问某个字符（es5之后）</p>
+<h4 id="RegExp"><a href="#RegExp" class="headerlink" title="RegExp"></a>RegExp</h4><p>RegExp是一种内置的类，也就是一种特殊对象。文本匹配语法。String和RegExp均定义了利用正则表达式进行模式匹配和查找替换的函数</p>
+<p><code>/xxx/修饰符</code> 就构成了一个正则表达式的直接量写法</p>
+<p>字符串的一些用法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var text = &apos;testing:1,2,3&apos;</span><br><span class="line">var pattern = /\d+/g // 匹配所有包含一个或多个数字的实例</span><br><span class="line">pattern.test(text) // true 匹配成功</span><br><span class="line">text.search(pattern)  // 9 首次匹配成功的位置</span><br><span class="line">text.match(pattern) // [&apos;1&apos;,&apos;2&apos;,&apos;3&apos;]  所有匹配成功的实例组成的数组</span><br><span class="line">text.replace(pattern,&apos;#&apos;) // test:#,#,# 替换所有匹配到的实例</span><br><span class="line">text.split(/\D+/) // [&apos;&apos;,&apos;1&apos;,&apos;2&apos;,&apos;3&apos;] 用非数字字符截取字符串</span><br></pre></td></tr></table></figure></p>
+<h3 id="Boolean"><a href="#Boolean" class="headerlink" title="Boolean"></a>Boolean</h3><p>undefined null 0 -0 NaN ‘’ 都会被转换成false，所有其他值，包括所有对象（包括array,function）都会转成true。</p>
+<p>布尔值包含toString()方法，转成’true’/‘false’</p>
+<h3 id="null和undefined"><a href="#null和undefined" class="headerlink" title="null和undefined"></a>null和undefined</h3><p><code>typeof null</code>返回object，null被认为是一个特殊的对象值，含义是‘非对象’。但实际上，认为null是它自有类型的唯一成员，理解为‘无值’</p>
+<p><code>typeof undefined</code>返回undefined，即‘未定义’，‘不存在’。最好不用！！</p>
+<p>注意<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">null == undefined</span><br><span class="line">true</span><br><span class="line"></span><br><span class="line">null === undefined</span><br><span class="line">false</span><br></pre></td></tr></table></figure></p>
+<h3 id="全局对象"><a href="#全局对象" class="headerlink" title="全局对象"></a>全局对象</h3><p>全局属性：undefined、Infinity、NaN<br>全局函数：isNaN()、parseInt()<br>构造函数：Date()、ReExp()、String()、Object()、Array()<br>全局对象：Math、JSON</p>
+<h3 id="包装对象"><a href="#包装对象" class="headerlink" title="包装对象"></a>包装对象</h3><p>对象是一种复合值：属性或已命名值的集合。通过<code>.</code>或<code>[]</code>来引用属性值。当属性值是一个函数时，称之为方法</p>
+<p>字符串值s不是对象，但是仍然可以使用属性。因为只要引用了字符串的的属性，如length或sbustring这些方法，js会将字符串通过<code>new String(s)</code>的方式转换成对象，这个对象继承了字符串的方法，s.length其实是调用了该临时对象的属性/方法。一旦属性引用结束，新创建对象就会销毁。其他Number()、Boolean()也如此。这个临时对象称之为包装对象<br>接下来思考：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var s= &apos;test&apos;</span><br><span class="line">s.len = 4</span><br><span class="line">var t = s.len</span><br><span class="line">t 为undefined</span><br></pre></td></tr></table></figure></p>
+<p><code>s.len= 4</code>的过程是：new String()创建一个临时字符串对象，并给其len属性设置4，随即销毁这个对象。第三行是查询属性值。结果为undefined，因为临时对象又是一个新的临时对象了。<br>临时对象可以用来区分字符串值/字符串对象、数字/数值对象、布尔值和布尔对象<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var s = &apos;test&apos;</span><br><span class="line">var S = new String(&apos;test&apos;)</span><br><span class="line">s == S // true</span><br><span class="line">s === S // false</span><br><span class="line">typeof s // string</span><br><span class="line">typeof S // object</span><br></pre></td></tr></table></figure></p>
+<h3 id="不可变原始值和可变的对象引用"><a href="#不可变原始值和可变的对象引用" class="headerlink" title="不可变原始值和可变的对象引用"></a>不可变原始值和可变的对象引用</h3><p>原始值（undefined、null、布尔值、数字和字符串）与对象（包括数组和函数）有着根本区别。</p>
+<ol>
+<li>任何方式都无法更改一个原始值</li>
+<li>对象也被称为引用类型，与基本类型区分开。对象值就是引用，对象的比较就是引用的比较。当且仅当引用同一个基对象时才相等<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">var o = &#123;x:1&#125;,p=&#123;x:1&#125;</span><br><span class="line">o == p // false</span><br><span class="line">o === p // false,两个单独的对象永不相等</span><br><span class="line">var a = [],b=[]</span><br><span class="line">a == b // false</span><br><span class="line">a === b // false,两个单独的数组永不相等</span><br><span class="line"></span><br><span class="line">var a = []</span><br><span class="line">var b = a // 变量b引用同一个数组</span><br><span class="line">b[0] = 1 // 修改引用的数组</span><br><span class="line">a[0]  // 1</span><br><span class="line">a === b // true</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">值</th>
+<th style="text-align:center">转换为字符串</th>
+<th style="text-align:center">数字</th>
+<th style="text-align:center">布尔值</th>
+<th style="text-align:center">对象</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">undefined</td>
+<td style="text-align:center">‘undefined’</td>
+<td style="text-align:center">NaN</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">throws TypeError(不是对象)</td>
+</tr>
+<tr>
+<td style="text-align:center">null</td>
+<td style="text-align:center">‘null’</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">throws TypeError</td>
+</tr>
+<tr>
+<td style="text-align:center">true</td>
+<td style="text-align:center">‘true’</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">new Boolean(true)</td>
+</tr>
+<tr>
+<td style="text-align:center">false</td>
+<td style="text-align:center">‘false’</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">new Boolean(fase)</td>
+</tr>
+<tr>
+<td style="text-align:center">‘’</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">new String(‘’)</td>
+</tr>
+<tr>
+<td style="text-align:center">‘1.2’</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">1.2</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">new String(‘1.2’)</td>
+</tr>
+<tr>
+<td style="text-align:center">‘test’</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">NaN</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">new String(‘test’)</td>
+</tr>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">‘0’</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">new Number(0)</td>
+</tr>
+<tr>
+<td style="text-align:center">-0</td>
+<td style="text-align:center">‘-0’</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">new Number(-0)</td>
+</tr>
+<tr>
+<td style="text-align:center">NaN</td>
+<td style="text-align:center">‘NaN’</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">new Number(NaN)</td>
+</tr>
+<tr>
+<td style="text-align:center">Infinity</td>
+<td style="text-align:center">‘Infinity’</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">new Number(Infinity)</td>
+</tr>
+<tr>
+<td style="text-align:center">-Infinity</td>
+<td style="text-align:center">‘-Infinity’</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">new Number(-Infinity)</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">‘1’</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">new Number(1)</td>
+</tr>
+<tr>
+<td style="text-align:center">{}(任意对象)</td>
+<td style="text-align:center">下详</td>
+<td style="text-align:center">下详</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">[]空数组</td>
+<td style="text-align:center">‘’</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">[9]一个数字元素</td>
+<td style="text-align:center">‘9’</td>
+<td style="text-align:center">9</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">[9,2]多个数字元素</td>
+<td style="text-align:center">‘9,2’,join(‘,’)</td>
+<td style="text-align:center">NaN</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">[‘a’,2]</td>
+<td style="text-align:center">‘a,2’</td>
+<td style="text-align:center">NaN</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">function(){}</td>
+<td style="text-align:center">下详</td>
+<td style="text-align:center">NaN</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><code>==</code>判断时会视情况先做类型转换</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/30/把webpack搞清楚-1/" rel="next" title="webpack学习路径（1）">
+                <i class="fa fa-chevron-left"></i> webpack学习路径（1）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/03/ES6模板/" rel="prev" title="ES6模板">
+                ES6模板 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="zhei">
+            
+              <p class="site-author-name" itemprop="name">zhei</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/zhei" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#准备"><span class="nav-text">准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Number"><span class="nav-text">Number</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#范围"><span class="nav-text">范围</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二进制浮点数四舍五入误差"><span class="nav-text">二进制浮点数四舍五入误差</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Date-构造函数"><span class="nav-text">Date() 构造函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String"><span class="nav-text">String</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#String自带的方法："><span class="nav-text">String自带的方法：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RegExp"><span class="nav-text">RegExp</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Boolean"><span class="nav-text">Boolean</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#null和undefined"><span class="nav-text">null和undefined</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#全局对象"><span class="nav-text">全局对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#包装对象"><span class="nav-text">包装对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不可变原始值和可变的对象引用"><span class="nav-text">不可变原始值和可变的对象引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型转换"><span class="nav-text">类型转换</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhei</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
